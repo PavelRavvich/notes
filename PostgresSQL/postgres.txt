@@ -1,0 +1,45 @@
+ВЫБОРКИ
+select * from users; --вывод всей таблицы.
+
+select * from users as u --as значит что к таблице users можно обращаться по псевдониму u.
+where  u.id = 3; --выведет целиком кортеж с id = 3.
+
+select u.login, u.password from users as u where u.id = 3; --выведет только логин и пароль из кортежа.
+
+select count(*) from users as u where u.login = 'pavel'; --вывести колличество совпадений с where. count - фунуция
+select count(u.id) from users as u where u.login = 'pavel'; --если использовать 1ный ключ запрос быстрее. 
+
+select * from users as u
+where u.login = 'pavel' and u.password is not null; --пароль не может быть null.
+
+select * from users as u
+where u.login = 'pavel' and u.create_date > '2000-10-01 00:00:00'; --выборка всех у кого логин pavel и дата создания позже...
+
+select * from users as u
+where u.login like '%reg_exp%'; --все логины которые содержат(like) регулярку.
+
+select * from users as u
+where u.create_data between '2000-10-01 00:00:00' and '2000-10-01 00:00:00'; --задать диапазон(between)
+
+select * from users as u
+where u.id between 1 and 5; --задать диапазон(between)
+
+select * from users as u
+where u.id in (1, 4, 7); --выборка по массиву значений какого-то поля.
+----------------------------------------------------------------------------------
+СЛИЯНИЯ inner join
+
+select * from users as u
+inner join comments as c
+on u.id = c.comment; --получим выборку в виде большой таблицы где прискствуют все отрибуты обоих таблиц и выполняется условие u.id = c.comment_id
+
+select u.name, c.description from users as u
+inner join comments as c ON u.id = c.user_id;  --получим выборку в виде таблицы из стлобцов u.name, c.description по условию ON
+
+select u.name, c.description from users as u
+inner join comments as c ON u.id = c.user_id
+where name is not null; --where будет действовать на основную таблицу users
+----------------------------------------------------------------------------------
+ВСТАВКИ
+insert into users(login, password, create_date) --последовательность атрибутов.
+values('some_login', 'some_passwords', '2000-12-12 00:00:00'); --значения для вставки.
