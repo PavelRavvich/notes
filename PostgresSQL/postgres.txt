@@ -43,3 +43,7 @@ where name is not null; --where будет действовать на осно�
 ВСТАВКИ
 insert into users(login, password, create_date) --последовательность атрибутов.
 values('some_login', 'some_passwords', '2000-12-12 00:00:00'); --значения для вставки.
+
+----------УЗНАТЬ ТИПЫ ДАННЫХ В ТАБЛИЦЕ-------------------
+SELECT column_name, column_default, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'my_table';
+----------------------------------------------------------------------------------
