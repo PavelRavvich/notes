@@ -21,7 +21,7 @@ A: Добавление "избыточных" данных с целью:
 Какие типы соединений (join) таблиц существуют? В чем их разница?
 INNER JOIN Выбираются только совпадающие данные из объединяемых таблиц. 
 
-OUTER JOIN Такое объединение вернет данные из обеих таблиц (совпадающие по условию объединения) ПЛЮС дополнит выборку оставшимися данными из внешней таблицы, которые по условию не подходят, заполнив недостающие данные значением NULL.
+OUTER JOIN Такое объединение вернет совпадающие данные из объединяемых таблиц ПЛЮС дополнит выборку оставшимися данными из внешней таблицы, которые по условию не подходят, заполнив недостающие данные значением NULL.
 
 Хорошая статья:
 http://www.skillz.ru/dev/php/article-Obyasnenie_SQL_obedinenii_JOIN_INNER_OUTER.html
@@ -46,7 +46,7 @@ http://www.skillz.ru/dev/php/article-Obyasnenie_SQL_obedinenii_JOIN_INNER_OUTER.
 ------------------------------------------------------
 Что такое deadlock?
 
-Как в многопоточности. Только в роли потоков транзакции.
+Как в многопоточности. Только в роли потоков - транзакции.
 ------------------------------------------------------
 Что такое триггер? (Какие типы триггеров вы знаете?)
 
@@ -65,3 +65,77 @@ HAVING - наоборот сначала все функции и группир
 Что такое GROUP BY?
 
 Фраза GROUP BY (группировать по) инициирует перекомпоновку указанной во FROM таблицы по группам, каждая из которых имеет одинаковые значения в столбце, указанном в GROUP BY.
+
+------------------------------------------------------
+В чем разница между  SQL and MySQL or SQL Server?
+
+SQL - это язык запросов к СУБД
+А MySQL or SQL это конкретные СУБД
+------------------------------------------------------
+В чем разница между SQL and PL/SQL?
+
+PL/SQL это расширение для SQL для написания процедурных функций к базе
+------------------------------------------------------
+Какие DDL команды есть в SQL?
+
+Команды для манипулирования объектами базы: CREATE  ALTER  DROP 
+------------------------------------------------------
+Какие DML команды бывают?
+
+INSERT — осуществляет вставку строк в таблицу.
+DELETE — осуществляет удаление строк из таблицы.
+UPDATE — осуществляет модификацию данных в таблице.
+SELECT — осуществляет выборку данных из таблиц по запросу.
+------------------------------------------------------
+Как работают DCL команды?
+
+управлять доступом пользователей к базе
+GRANT предоставление полнамочий
+REVOKE  отмена
+SET ROLE устанавливает роли в рамках текущего сеанса
+------------------------------------------------------
+BETWEEN для диапазона значений
+IN указывает на подзапрос по которому следует делать седующее действие в транзакции
+------------------------------------------------------
+What are the specific uses of SQL functions?
+
+------------------------------------------------------
+What are the case manipulation functions of SQL?
+------------------------------------------------------
+Which function returns the remainder(остаток)
+
+in a division operation? % как в джаве
+------------------------------------------------------
+Q:What is the purpose of the NVL function? 
+A:Work with null how zero (0)
+------------------------------------------------------
+What is the difference between the NVL and the NVL2 functions?
+
+NVL ( expr1 , expr2 ): If expr1 is null, then NVL returns expr2. If expr1 is not null, then NVL returns expr1.
+
+NVL2 ( expr1 , expr2 , expr3 ): If expr1 is null, then NVL2 returns expr3. If expr1 is not null, then NVL2 returns expr2
+------------------------------------------------------
+What is the use of the NULLIF function?
+
+Inverse NVL function
+------------------------------------------------------
+Discuss the syntax and use of the COALESCE function?
+Same to NVL only faster
+------------------------------------------------------
+Which expressions or functions allow you to implement conditional processing in a SQL statement?
+
+
+You want to display a result query from joining two tables with 20 and 10 rows respectively. Erroneously you forget to write the WHERE clause. What would be the result?
+
+
+What is the difference between cross joins and natural joins?
+cross join объединяет все возможные пары вне зависимости от . того есть ли совпадения по каким-то условиям
+natural joins объединяет стобцы с одинаковыми именами
+
+What is the purpose of the group functions in SQL? 
+A: Sort for inversing DESC
+
+Give some examples of group functions.Say True or False. Give explanation if False.
+
+
+
