@@ -1,0 +1,181 @@
+Как работает сервлет?
+
+Пользователь при помощи браузера вормирунт request(запрос в текстовом формате) и web-server (tomcat на пример) 
+фомирует 2 java объекта http-response и http-request.
+
+Из объекта http-request мы получаем запрос сконвертированный web сервером в виде InputStream, 
+ОБРАБАТЫВАЕМ и
+и записывам их при помощи IO писателя в http-response:
+
+
+new IO.SomeWriter(HttpServletResponse.getOutputStream())
+
+==================================================
+Как определить какой сервлет за какие запросы отвечает?
+
+Для этого служит web.xml
+==================================================
+GET только получение данных
+get это ULR (Uniform Resource Locator) - не безопасный запрос с ограничением в 255 символов возвращает данные по url
+
+POST для записи и измненения данных. Нет ограничения на колличество данных.
+отправляется только при помощи кода фомы, <form action="" method="post">
+
+PUT то же самое что Post используется для обновления данных.
+
+DELETE для удаления данных с сервера 
+
+TRACE проверяет соединение ничего не принимает возвращает заголовок что подтверждает что соединение есть.
+
+OPTIONS возвращает заголовки которые потдерживает сервис
+
+HEAD проветка соединения
+==================================================
+
+Как использовать?
+GET - навигация по клиенту
+POST - редактирование и создание
+==================================================
+
+        ServletConfig ОДИН ДЛЯ КАЖДОГО СЕРВЛЕТА.
+
+ServletConfig - Конфигурация сервлета. ЭТО МАПА ПРИКРУЧЕНАЯ К web.xml
+Можно задавать сервлету доп параметры в web.xml:
+
+<servlet>
+   <servlet-name>customer</servlet-name>
+   <servlet-class>common.servlets.Customers</servlet-class>
+   <init-param>
+      <param-name>version</param-name>  //параметры
+      <param-value>2.3.123</param-value>  //параметры
+   </init-param>
+</servlet>
+
+В классе сервлета переопределяем метод:
+public void init(ServletConfig config) { 
+    System.out.println ("Версия сервлета : " + config.getInitParameter("version")); 
+}
+
+и получить можно:
+String наша_версия = config.getInitParameter("version");
+
+ЭТО МАПА ПРИКРУЧЕНАЯ К web.xml и связанная с сервлетом.
+=======================================================
+
+             ServletContext ОДИН НА ПРИЛОЖЕНИЕ getServletContext()
+
+К контексту можно примапить параметры в web.xml
+<context-param>
+    <param-name>email</param-name>
+    <param-value>admin@email.com</param-value>
+</context-param>
+
+public void init (ServletConfig config) throws ServletException  {  
+    ServletContext sc = config.getServletContext();   
+}  
+
+
+Для помещения общих объектов доступных в сервлетах в ServletContext во время запуска приложения
+Специальный класс с анатацией.
+
+@WebListener
+public class ContextListener implements ServletContextListener {
+
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+
+        final ServletContext servletContext = servletContextEvent.getServletContext();
+        // просто мапа
+        servletContext.setAttribute("key", new Object());
+
+    }
+    ...
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        если надо закрыть какие-то ресурсы на пример;
+    }
+}
+
+И вызов в сервлете:
+
+public class AddUserServlet extends HttpServlet {
+
+    private DBJoint db;
+
+    @Override
+    void init(ServletConfig config) {
+        ServletContext servletContext = config.getServletContext();
+        db = servletContext.getAttribute("db");
+    }
+
+    ...
+
+}
+=============================================================================
+
+			Сервлетный фильтр для предварительной обработки заголовков http запросов
+			один фильтр может работать с несколькими сервлетами
+
+	void init (FilterConfig config) throws ServletException;
+	void destroy();
+	void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+
+Примапить:
+<filter>
+    <filter-name>FilterName</filter-name>
+    <filter-class>common.FilterConnect</filter-class>
+    <init-param>
+        <param-name>active</param-name>
+        <param-value>true</param-true>
+    </init-param>
+</filter>
+ 
+<filter-mapping>
+    <filter-name>FilterName</filter-name>
+    <servlet-name>ServletName</servlet-name>
+</filter-mapping>
+
+
+Сам фильтр:
+
+public class FilterConnect implements Filter { 
+    private FilterConfig config = null; 
+    private boolean active = false; 
+
+    public void init (FilterConfig config) throws ServletException { 
+        this.config = config; 
+        String act = config.getInitParameter("active"); 
+        if (act != null) 
+            active = (act.toUpperCase().equals("TRUE")); 
+    } 
+
+    public void doFilter (ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException { 
+        if (this.active) { 
+
+            // Здесь можно вставить код для обработки 
+
+        } 
+        chain.doFilter(request, response); 
+    } 
+
+    public void destroy() { 
+        config = null; 
+    } 
+} 
+
+=============================================================================
+
+			RequestDispatcher для передачи данных между сервлетами одного приложения
+
+
+
+
+
+
+
+
+
+
+
+
