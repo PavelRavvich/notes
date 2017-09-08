@@ -1,0 +1,121 @@
+Новое api находится в:
+org.apache.hadoop.mapreduce
+
+Основной класс Job
+Всю информацию о входных и выходных и данных(где находятся, тип)
+Какие мапперы и какие редюсеры будут в программе 
+
+Создаем задачу:
+Job job = Job.getInstance(getConf(), "taskname");
+job.setJarByClass(getClass());// так мы говорим что функциональность находится в том же классе.
+
+Определяем где входные данные в качестве пути может быть файл, директория, шаблон пути:
+TextinputFormat.addInputPath(job, new Path(args[0]));
+job.setInputFormatClass(TextInputFormat.class);
+
+Класс TextInputFormat определяет входные данные как ключь - LongWritable и значение - Text
+
+Описываем выходные данные:
+TextOutputFormat.setOutputPath(job, new Path(args[1]));
+job.setOutputFormatClass(TextOutputFormat.class);
+job.OutputKeyClass(Text.class);
+job.OutputValueClass(IntWritable.class);
+
+
+Если промежуточные типы данные  для map и reduce отличаются,то
+job.setMapOutputKeyClass(Text.class);
+job.setMapOutputValueClass(LongWritable.class);
+
+
+Определение какие классы у нас определяют мапер и редъюсер:
+job.setMapperClass(WordCountMapper.class);
+job.setReducerClass(WordCountReducer.class);
+
+И можем определить при необходимости Combainer:
+job.setCombainerClass(WordCountReducer.class);
+
+И запуск задачи:
+job.waitForComplition(true);
+
+Полный код конфигурации задачи:
+public class WordCountJob extends Configured inmlements Tool {
+	@Override
+	public int run(String[] args) throw Exception {
+
+		Job job = Job.getInstance(getConf(), "taskname");
+		job.setJarByClass(getClass());
+
+		TextInputFormat.addInputPath(job, new Path(args[0]));
+		job.setInputFormatClass(TextInputFormat.class);
+
+		job.setMapperClass(WordCountMapper.class);
+		job.setReducerClass(WordCountReducer.class);
+		job.setCombainerClass(WordCountReducer.class);
+
+		TextOutputFormat.setOutputPath(job, new Path(args[1]));
+		job.setOutputFormatClass(TextOutputFormat.class);
+		job.OutputKeyClass(Text.class);
+		job.OutputValueClass(IntWritable.class);
+
+		return job.waitForComplete(true) ? 0 : 1;
+	}
+
+	public static void main(String[] args) throw Exception {
+		int result = ToolRunner.run(new WordCountJob(), args);
+		System.out.println(result);
+	}
+}
+
+
+Mapper для наследования от него.
+setup типо инит 
+cleanup типо дестрой
+map - логика самого маппинга
+
+//Полный код мапера
+public class WordCountMapper extends Mapper <LongWritable, Text, Text, IntWritable> {
+	private final static IntWritable one = new IntWritable(1);
+	private final Text word = new Text();
+
+	/**
+	 * LongWritable key - номер строки игнорируется.
+	 * Text value - строка
+	 */
+	@Override
+	protected void map(LongWritable key, Text value, Context context) throws IOExcaption, InterruptedException {
+		//разбиваем по словам
+		String[] dataLine = value.toString().split(" ");
+		Iterator iteator = dataLine.iterator();
+		
+		while(iterator.hasNext()) {
+			word.set(iterator.next());
+			context.write(word, one);
+		}
+	}
+}
+
+//Полный код редюсера
+public class WordCountReducer extends Reducer <Text, IntWritable, Text, IntWritable> {
+	@Override
+	protected void reduce(Text key, Iterable values, Context context) throws IOExcaption, InterruptedException {
+		int sum = 0;
+		for(IntWritable value : values) {
+			sum += value.get();
+		}
+		context.write(key, new IntWritable(sum));
+	}
+}
+
+
+Context (конфигурации, передача статистики, принимает все выходные данные из мапера)
+
+
+Reducer/Combiner для наследования от него.
+setup типо инит 
+cleanup типо дестрой
+reduce - логика редъюса
+
+
+Partition для наследования от него.
+getPartition для определения куда делать shuffle
+
