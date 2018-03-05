@@ -43,10 +43,12 @@ NgModule({
   
 СВЯЗЫВАНИЕ АТТРИБУТОВ ТЕГА С ПОЛЯМИ КОМПОНЕНТА
   
+
 Динамическое связываение аттрибутов тега с полями компонента 
+Ангуляр все время следит за canAddCars
 <button [disabled]="!canAddCars" class="btn btn-primary">Добавить машину</button>
 
-Статическое связывание
+Статическое связывание переменная canAddCars применяется только один раз
 <button disabled="{{!canAddCars}}" class="btn btn-primary">Добавить машину</button>
 
 ДИРЕКТИВЫ
@@ -86,7 +88,7 @@ NgModule({
 
 СВЯЗЫВАНИЕ КОМПОНЕНТОВ
 
-1 Способ
+1 Прямое связывание 2-х компонентов
 
 С содержащем компоненте:
 [{ name: string, year: number }] = получение значений для вывода;
@@ -95,4 +97,35 @@ NgModule({
 В содержащимся компоенте:
 @Input() bikeItem: {name: string, year: number}; // Говорит о том что свойство bikeItem - входящий параметр
 <p>Name: {{bikeItem.name}}, Year: {{bikeItem.year}}</p>
+
+2. Связывание 2х компонентов через 3й !!!!!!!!!!!
+
+В корневом CarsComponent(массив)
+<app-addcar (onAddCar)="updateCarList($event)"></app-addcar>
+<app-car *ngFor="let car of cars" [carItem]="car"></app-car>
+и:
+   cars: [{ name: string, year: number }]
+   updateCarList(car: {name: string, year: number}) {
+    this.cars.push(car);
+  }
+ 
+В одиночном объекте масства:
+<h4 class="list-group-item-info">Название: {{carItem.name}}</h4>
+<p class="list-group-item-secondary">Год: {{carItem.year}}</p>
+@Input() carItem: {name: string, year: number};
+
+В компоненте форме которая слушает состояние массива
+<input type="text" class="form-control" [(ngModel)]="carName">
+<input type="text" class="form-control" [(ngModel)]="carYear">
+<button class="btn btn-primary" (click)="addCar()">Добавить</button>
+@Output() onAddCar = new EventEmitter<{name: string, year: number}>();
+  addCar() {
+    this.onAddCar.emit({
+      name: this.carName,
+      year: this.carYear
+    });
+    this.carName = '';
+    this.carYear = 2017;
+  }
+!!!!!!!!!!!!
 
