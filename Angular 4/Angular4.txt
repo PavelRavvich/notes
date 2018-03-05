@@ -1,0 +1,98 @@
+Для создания компонента:
+
+===== 1 СПОСОБ =========
+1. my.component.ts и импортировать my.component.html
+
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'app-my',
+  templateUrl: './my.component.html'
+})
+export class MyComponent {}
+
+2. Зарегестрировать в app.modules.ts
+
+NgModule({
+  declarations: [
+    AppComponent,
+    MyComponent
+  ],
+  ...
+  
+  ===== 2 СПОСОБ =========
+  1 Перейти в директорию где компонент должен находится
+  2 
+  ng generate component my2
+  или сокращенный вариант
+  ng g c my2
+  
+  
+ВИДЫ СЕЛЕКТОРОВ
+1. Тэг 
+@Component({
+  selector: 'app-cars',  // использование <app-cars></app-cars>
+  
+2. Аттрибут
+@Component({
+  selector: '[app-cars]', // использование <app-cars></app-cars>
+  
+3. Класс
+@Component({
+  selector: '.app-cars', // использование <div class="app-cars"></div>
+  
+СВЯЗЫВАНИЕ АТТРИБУТОВ ТЕГА С ПОЛЯМИ КОМПОНЕНТА
+  
+Динамическое связываение аттрибутов тега с полями компонента 
+<button [disabled]="!canAddCars" class="btn btn-primary">Добавить машину</button>
+
+Статическое связывание
+<button disabled="{{!canAddCars}}" class="btn btn-primary">Добавить машину</button>
+
+ДИРЕКТИВЫ
+
+1. if - else
+
+<p *ngIf="!addItemStatus; else succsessStatus">Item does not added</p>
+<ng-template #succsessStatus>
+  <p>Item added</p>
+</ng-template>
+
+2. for
+
+<ul>
+  <li *ngFor="let item of items_2; let i = index">
+    <b>Index: {{i + 1}}</b>
+    <b>Id: {{item.id}}</b>
+    <b>Name: {{item.name}}</b>
+  </li>
+</ul>
+
+3. Стили ngStyle и ngClass
+
+<ul>
+  <li *ngFor="let item of items_2; let i = index">
+    <div
+      [ngStyle]="{backgroundColor: (i + 1) % 2 === 0 ? 'azure' : 'transparent', 'color': 'green'}"
+      [ngClass]="{'big-text': metodFromComponentTS(i)}"
+    >
+      <b>Index: {{i + 1}}</b>
+      <b>Id: {{item.id}}</b>
+      <b>Name: {{item.name}}</b>
+    </div>
+
+  </li>
+</ul>
+
+СВЯЗЫВАНИЕ КОМПОНЕНТОВ
+
+1 Способ
+
+С содержащем компоненте:
+[{ name: string, year: number }] = получение значений для вывода;
+<app-bike *ngFor="let bike of bikes" [bikeItem]="bike"></app-bike>
+
+В содержащимся компоенте:
+@Input() bikeItem: {name: string, year: number}; // Говорит о том что свойство bikeItem - входящий параметр
+<p>Name: {{bikeItem.name}}, Year: {{bikeItem.year}}</p>
+
