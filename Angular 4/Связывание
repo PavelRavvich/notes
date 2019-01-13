@@ -32,3 +32,20 @@
 emitNewDataStateFromChildToParent() {
     his.changeData.emit(/*new data*/);
 }
+
+==========================================================================
+Уведомление об изменениях из родителя к доченему
+https://stackoverflow.com/questions/44053227/how-to-emit-an-event-in-angular-from-parent-to-child
+
+Через сервис
+export class Service {
+	private eventsSubject: Subject<void> = new Subject<void>();	
+}
+
+В родителе
+emitEventToChild() {
+  this.service.eventsSubject.next();
+}
+
+В дочернем
+this.service.eventsSubject.subscribe();

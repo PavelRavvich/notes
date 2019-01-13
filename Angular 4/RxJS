@@ -1,6 +1,4 @@
-==========================================================================
                     RxJS
-
 Для создания 
 
 При помощи метода Rx.Observable.of()
@@ -22,3 +20,8 @@ Rx.Observable.create(function(observer) => {
 s1$.merge(s$2).subscribe()
 Rx.Observable.merge(s1$, s2$)
 
+Observable.zip(obs1, obs2).subscribe((resp) => {
+	// in resp contains [obs1Result, obs2Result]
+});
+
+TODO...
