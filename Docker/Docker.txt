@@ -1,0 +1,41 @@
+Docker
+
+Basic.
+A "Container" is an isolated runtime.
+Container provides a private machine like VM but all container work inside single OS.
+Each container has own process space, network interface
+
+Docker engine - the code which manages Docker stuff. Creates and runs docker containers.
+Docker container - standart runtime in Docker. Running Docker image.
+Docker Image - the representatin or configuration  of Docker container, something like JAR or WAR.
+
+
+Commands
+
+Premare
+
+`sudo usermod -aG docker currentUserName` - set access for current user for driving docker container.
+`sudo service docker restart` - after user privileges setted docker service should be restarted.
+
+Docker usage
+`docker run` -d mongo` - running mongo image in deamon mode
+`docker run -it mongo bash` - flags `-it` says we want new interactive session.
+`exit` -  when we inside the docker container we can run `exit` but container will be stoped.
+
+
+`docker ps -a` - list of containers include running and stoped.
+`docker start ${NAME_FROM_docker_ps_-a}` - start old container wich was stoped
+`docker ps` - list of run containers.
+`docker stop ${NAME_FROM_docker_ps}` - stop container
+`docker run -h mongo_host --name MongoDB -d mongo` - flag `-h` - host_name `--name` - container name
+`docker run -p 27017:27017 -d mongo` - running mongo image with port mapping [local:container]
+`docker inspect container_name | grep IPAddress` - get information about container with sorting
+`docker rm` - delete container
+
+
+Information about container
+`docker diff container_name` - list of changed files inside container. container_name it means arg `--name`
+`docker logs container_name` - list of events inside container.
+`docker images` - list of all images wich we use in past.
+
+
