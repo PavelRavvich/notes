@@ -1,0 +1,15 @@
+==========================================================================
+                    Жизненный цикл компонента 
+constructor
+ngOnInit 
+
+ngOnChanges принимает SimpleChanges // при любых изменениях
+ngDoCheck                           // при любых изменениях
+
+ngAfterContentInit 
+ngAfterContentChecked 
+
+ngAfterViewInit 
+ngAfterViewChecked
+
+onDestroy

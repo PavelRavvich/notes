@@ -1,0 +1,12 @@
+==========================================================================
+                         Передача HTML компоненту
+
+<my-component>
+	<div>text</div>	
+</my-component>
+
+Внутри my-component должен быть <ng-content></ng-content>
+
+Для получения через локальную референцию элементов внутри дочернего компонента 
+@ContentChild('refName') ref: ElementRef;
+Доступен внутри ngAfterViewInit() {}

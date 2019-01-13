@@ -1,0 +1,40 @@
+Формы 
+
+
+ШАБЛОН
+через ngModel
+
+1. Установить прослушивание через (ngSubmit)="onHandlerForm(form)"
+2. Установить локальную референцию для формы
+
+<form (ngSubmit)="submitFormHandler(form)" #form="ngForm">
+	<input type="text" ngModel name="email" /> 
+	<button type="submit"/> 
+</form>
+
+form: NgForm;
+
+submitFormHandler(form: NgForm) {
+	console.log(form);
+}
+
+Либо через ViewChild()
+
+Несколько контролов можно объединить при помощи ngModelGroup="groupName"
+
+
+
+ РЕАКТИВНЫЕ
+
+Байндинг
+<form [formGroup]="form" ngSubmit="handleSubmit()">
+	<input formControlName="email"/>
+
+ new FormGroup({
+ 	email: new FormControl('defaut value', [Validators.required, this.customValidatorMathod.bind(this)])
+ })
+
+ Для создания валидатора нужно создать метод который принимает FormControl 
+ и должен возвращать объект с кодом ошибки либо null/undefined
+
+ Асинкронный валидатор возвращает Promise или Observable и добавляются в отдельном массиве для асинхронных валидаторов.

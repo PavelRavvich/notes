@@ -1,0 +1,70 @@
+ТИПЫ
+
+string
+number
+boolean
+any
+смешаныйstring | number
+null
+undefined
+
+enum Job {Value1 = 50, Value2}
+
+never для выбрасования ошибок
+
+Не отдельный тип
+number[]
+Array<number>
+let a: [number, string] = [1, 'abc']
+let a: Array<number, string> = [1, 'abc']
+
+
+ФУНКЦИИ
+
+let fun: (a: string, b: number) => number;
+
+Параметры по умолчанию
+(a: number = 1) => ...
+
+В параметр вместо можно послать функцию которая будет возвращать значение необходимого типа:
+let user: (name: string, age: () => void) = {}
+
+
+КЛАССЫ
+
+class User {
+	//По умолчанию public
+	public/private/protected name: string
+	constructor(name: string) {
+		thisname = name;
+	}
+}
+
+Если в параметрах конструктора использовать модификатор public то TS сам создаст переменную
+
+НАСЛЕДОВАНИЕ через extends конструктор через super()
+abstract class A {
+	abstract log(text: string): void
+}
+
+interface как в джаве
+
+
+ДЖЕНЕРИКИ:
+можно использовать для методов классов 
+
+function genFun<T>(data: T): T {
+	return data;
+}
+
+let instance: <T>(data: T) => T = genFun;
+
+
+
+ДЕКОРАТОРЫ
+function logDecorator(fn: Function) {
+	console.log()
+}
+
+@log
+class User {}

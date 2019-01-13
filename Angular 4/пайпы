@@ -1,0 +1,16 @@
+==========================================================================
+                         Пайпы
+
+Пайп это HTML транформер 
+{{ date | date: 'dd.MM.yyyy'}}
+{{ strVar | lowercase }}
+{{ strVar | splice:0:3 }} //вырезать
+{{ numVar | number:'1.3-4' }}
+{{ money | currency:'USD':true }}
+{{ 0.45 | percent }} => 45%
+{{ object | json }}
+
+Для создания своего пайпа @Pipe({name: 'appPipeSelector', pure: false/true}) и implements PipeTransform => transform(originValue, param)
+И добавить в declorations в app.module
+
+Пайп можно применять к массиву в *ngFor=item of items | filterPipe:items; let i = index

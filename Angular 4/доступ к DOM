@@ -1,0 +1,18 @@
+==========================================================================
+                         Доступ к DOM
+
+1.локальная референция
+<input #inRef/>
+<button (click)="handle(inRef)"
+handle(inRef: HTMLInputElement) { 
+	inRef.value // do something...
+	inRef.value = '' // clear
+}
+
+Или
+
+@ViewChild('inRef') inRef: ElementRef;
+handle(inRef: ElementRef) {
+	this.inRef.nativeElement.value // do something...
+	this.inRef.nativeElement.value = ''; // clear
+}

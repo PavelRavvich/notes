@@ -1,0 +1,37 @@
+==========================================================================
+                         Стандартные директивы
+
+Директивы измененяют поведения или преобразование DOM 
+
+Если используется else то нужно применять локальную референцию к компоненту ng-template
+
+<p *ngIf="txt1; else txt2">text_1</p>
+
+<ng-template #txt2>
+	<p>text_2</p>
+</ng-template>
+---------------
+Цикл for следит за изменением массива и обновляет шаблон.
+
+<p *ngFor="let item of items">{{item.fieldName}}</p>
+
+<p *ngFor="let item of items; i = index">{{i}}</p>
+----------------
+[ngStyle]="{'background': condition ? 'ted' : 'blue', 'color': 'blue'}"
+[ngClass]="{'my-class-1': getBooleanCondition()}"
+----------------
+<div [ngSwitch]="numberField">
+	<p *ngSwitchCase="1">1</p>
+	<p *ngSwitchCase="2">2</p>
+	<p *ngSwitchDefault>default</p>
+</div>
+
+
+Для создания декоратор @Directive({selector: '[appName]'})
+И в конструкторе классы директивы constructor(provate element: ElementRef, renderer: Renderer2) {}
+Или @HostBinding('style.background')
+В ngOnInit(this.renderer.setStyle(this.element.nativeElement, 'color', 'blue')) {}
+И добавить в declorations модуля
+Для обработки событий надо использовать @HostListener
+
+Передавать параметры в директиву можно через @Input() и [param]="javascriptCodeNotation"

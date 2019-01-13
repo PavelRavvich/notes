@@ -1,0 +1,66 @@
+==========================================================================
+                    Роутинг
+
+Обычно выносится в AppRoutingModule с декоратором 
+
+NgModule({
+	imports: [RouterModule.forRoot(appRotes)], 
+	exports: [RouterModule]
+})
+
+appRoutes: Routes = [
+	{path: '/cars', component: CarsComponent},
+	{path: '/bus', component: BusComponent}
+]; 
+
+
+
+<router-outlet></router-outlet>
+
+Что-бы страницы не перезагружались есть директива routerLink:
+<a [routerLink]="'/cars'">link</a>
+Чтобы добавить класс для пункта меню routerLinkActive="activeClass"
+А чтобы сравнение роутов было не по вхождению пути а по полному совпадению используется директива
+[routerLinkActiveOptions]="{exact: true}"
+
+
+Для програмной навигации:
+constructor(private router: Router, pivate route: ActivatedRoute)
+this.router.navigate(['/cars'])
+Для относительного перехода используется ActivatedRoute задает контекст откуда переходим
+this.router.navigate(['cars'], {relativeTo: route})
+
+Параметры адресной строки:
+
+this.router.navigate(['/vds_detail'], { queryParams: {id: vds._id} });
+
+<a [routerLink]="['/cars', car.id, car.name]">link</a>
+
+Для получения параметров тоже используется ActivatedRoute
+И в appRoutes для поля path надо указать имя параметра path: '/cars/:id/:name'
+
+route.snapshot.params['id']
+route.snapshot.params['name']
+
+route.params.sibscribe((params: Params) => params['id'], params['name'])
+
+Либо через
+[quryParams]={name: 'BMW'}
+this.route.queryParams['id']
+
+
+Встроенные роуты делаются при помощи поля children у роута:
+appRoutes: Routes = [
+	{path: '/cars', component: CarsComponent, children: 
+		[
+			{path: 'car', component: CarComponent}
+		]
+	}
+]; 
+
+404 с path '**'
+Для редиректа redirectTo
+
+
+Для защиты роутов используется интерфейс CanActivate и переопределяется метод canActivate()
+И в роутах добавляем {path: '/cars', component: CarsComponent, canActivate: [Guard]}
