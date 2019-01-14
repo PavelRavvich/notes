@@ -1,4 +1,5 @@
 Docker
+Cheet list https://springframework.guru/docker-cheat-sheet-for-spring-devlopers/
 
 Basic.
 A "Container" is an isolated runtime.
@@ -12,7 +13,7 @@ Docker Image - the representatin or configuration  of Docker container, somethin
 
 Commands
 
-Premare
+Prepare
 
 `sudo usermod -aG docker currentUserName` - set access for current user for driving docker container.
 `sudo service docker restart` - after user privileges setted docker service should be restarted.
@@ -20,11 +21,11 @@ Premare
 Docker usage
 `docker run` -d mongo` - running mongo image in deamon mode
 `docker run -it mongo bash` - flags `-it` says we want new interactive session.
-`exit` -  when we inside the docker container we can run `exit` but container will be stoped.
+`exit` -  when we inside the docker container we can run `exit` but container will be stopped.
 
 
-`docker ps -a` - list of containers include running and stoped.
-`docker start ${NAME_FROM_docker_ps_-a}` - start old container wich was stoped
+`docker ps -a` - list of containers include running and stopped.
+`docker start ${NAME_FROM_docker_ps_-a}` - start old container wich was stopped
 `docker ps` - list of run containers.
 `docker stop ${NAME_FROM_docker_ps}` - stop container
 `docker run -h mongo_host --name MongoDB -d mongo` - flag `-h` - host_name `--name` - container name
@@ -34,8 +35,25 @@ Docker usage
 
 
 Information about container
+`docker exec -it <container name> bash`
 `docker diff container_name` - list of changed files inside container. container_name it means arg `--name`
 `docker logs container_name` - list of events inside container.
 `docker images` - list of all images wich we use in past.
 
 
+Cleaning up container
+`docker kill $(docker ps -q)` - kill all running docker containers
+`docker rm $(docker ps -a -q)` - delete all stopped docker container
+`docker rmi <image name>` - delete docker image.
+`docker rmi $(docker images -q -f dangling=true)` - delete untagged (dangling) images
+`docker rmi $(docker images -q)` - delete all images
+`docker volume rm $(docker volume ls -f dangling=true -q)`
+
+EVIROMENT VARIABLE
+`docker run -e ENV_VAR_1=test_1 -e ENV_VAR_2=test_2 -d mongo`
+
+PORT MAPPING
+`docker run -p 27017:27017 -d mongo` - running mongo image with port mapping [local:container]
+
+STORAGE MAPPING
+`docker run -v /Users/dockerdata/mongo:/data/db -d mongo` - running mongo image with data storage mapping [local:container]
