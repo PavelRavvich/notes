@@ -1,0 +1,50 @@
+CREATE DOCKER IMAGE IN Fabric8
+
+For managing docker with maven we can use plugin fabric8 for exmple:
+
+`https://github.com/springframeworkguru/spring-boot-docker/blob/fabric8-add/pom.xml`
+
+For create image run: `mvn clean package docker:build`
+
+Very important:
+1. pom.xml settings see: `https://github.com/springframeworkguru/spring-boot-docker/blob/fabric8-add/pom.xml`
+2. Right locate for Dockerfile see same repo: `main/docker/Dockerfile`
+
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.20.0</version>
+
+				<configuration>
+
+                    <!--<dockerHost>http://127.0.0.1:2375</dockerHost>-->
+                    <dockerHost>unix:///var/run/docker.sock</dockerHost>
+
+                    <verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+
+                                <!--copies artficact to docker build dir in target-->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
