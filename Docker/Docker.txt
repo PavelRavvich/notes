@@ -37,7 +37,7 @@ Docker usage
 Information about container
 `docker exec -it <container name> bash`
 `docker diff container_name` - list of changed files inside container. container_name it means arg `--name`
-`docker logs container_name` - list of events inside container.
+`docker logs container_name` - list of events inside container. Can use with `-f` for following with logs.
 `docker images` - list of all images wich we use in past.
 
 
@@ -57,3 +57,30 @@ PORT MAPPING
 
 STORAGE MAPPING
 `docker run -v /Users/dockerdata/mongo:/data/db -d mongo` - running mongo image with data storage mapping [local:container]
+
+GO INSIDE CONTAINER
+`docker exec -it` <container name> bash
+
+
+Create Image
+`docker build -t spring-boot-docker .` - `-t tag_value` and `.` see into current directory.
+
+
+                   !CONNECTING MULTIPLE DOCKER CONTAINERS!
+
+For example we're have database and spring app in two different containers with will be connect with `--link`.
+
+First up and running mysql. And set external name with `--name` for db container will be available outside.
+`docker run --name external_name -p 3306:3306 -e MYSQL_DATABASE=my_db_name -d mysql`
+external_name - is name for connecting
+Run our spring app
+`
+docker run --name myspringapp -p 8080:8080 \
+--link external_name:external_name \
+-e SPRING_DATASOURCE_URL=jdbc:mysql://external_name:3306/my_db_name
+
+Value of `external_name` is bridge between two containers. For MySQL we set name. In URL of datasource in app container, as a host we're using precice name, and for connecting between we add `--link container_name:host_name`
+`
+
+
+

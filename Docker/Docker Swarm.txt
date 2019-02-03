@@ -1,0 +1,24 @@
+Swarn is way to create cluster from multiple docker containters on differen machines.
+We had to types of nodes: manager and worker.
+Manager node can run containers.
+
+First. we need enable to first manager node 
+`$ docker swarm init` - for swich on manager mode
+
+`$ docker service ls` - for get list of running servers
+
+For add node to swarn claster
+`$ docker swarm join-token` - get token from manager for access
+`$ docker swarm join --<token> --listen-addr <ip:port>` - execute on worker machine with token wicth was generated on manager and ip:port of manager
+
+
+`$ docker node ls` - get list node in swarm cluster !!ONLY ON SERVICE NODE!!
+`$ docker service ls` - get service node list
+`$ docker service ps <service name>` - get containers in the service
+
+
+`$ docker service rm <service name>` - remove service
+`$ docker node rm <node name>` - remove node from swarm cluster
+
+`$ docker node promote <node name>` - promote node from worker to manager
+`$ docker node demote <node name>` - demote node from manager to worker
